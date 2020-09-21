@@ -1,5 +1,6 @@
 #include <string.h>
 #include <assert.h>
+#include <stdlib.h>
 
 #include <curl/curl.h>
 
@@ -8,28 +9,36 @@
 
 int main(int argc, char** argv)
 {
-  const char* const url = API_ENDPOINT_URL;
+  char* url = API_ENDPOINT_URL;
+  char* url_args = API_ARGS;
   int ret = 0;
   CURL* curl;
   CURLcode res;
+
+  /* Data entry in which all response data will be placed. */
+  struct entry_t* e = malloc(sizeof(struct entry_t));
 
   curl_global_init(CURL_GLOBAL_DEFAULT);
   curl = curl_easy_init();
 
   if(curl)
   {
-    puts("-- Initialized cURL.");
+
     curl_easy_setopt(curl, CURLOPT_URL, url);
-    curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, (long)CURL_HTTP_VERSION_3);
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void*)e);
+
+    printf("-- Initialized cURL using URL %s.\n", url);
     res = curl_easy_perform(curl);
 
     if(res != CURLE_OK)
     {
       puts("-- cURL returned an error code!");
-      printf("\t-- Got error code %d.\n", res);
-      printf("\t-- Got error message %s\n", curl_easy_strerror(res));
+      printf("-- Got error code %d.\n", res);
+      printf("-- Got error message `%s`\n", curl_easy_strerror(res));
       ret = 1;
     }
+    puts("-- cURL performed successfully.");
   }
   else
   {

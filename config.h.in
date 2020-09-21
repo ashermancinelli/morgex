@@ -1,2 +1,2 @@
 #define API_ENDPOINT_URL "@API_ENDPOINT_URL@"
-
+#define API_ARGS "@API_ARGS@"
