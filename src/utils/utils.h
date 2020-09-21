@@ -1,9 +1,8 @@
 #pragma once
 
 #include <stddef.h>
-#include <stdio.h>
 
-struct entry_t
+struct response_t
 {
   char* buf;
   size_t sz;

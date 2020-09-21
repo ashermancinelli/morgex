@@ -23,3 +23,10 @@ add_subdirectory(src)
 find_package(CURL REQUIRED)
 target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC ${CURL_INCLUDE_DIR})
 target_link_libraries(${CMAKE_PROJECT_NAME} PUBLIC ${CURL_LIBRARIES})
+message(STATUS "Found CURL includes: ${CURL_INCLUDE_DIR}")
+
+# Find cJSON package and link against it
+find_package(cJSON REQUIRED)
+target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC ${cJSON_INCLUDE_DIR})
+target_link_libraries(${CMAKE_PROJECT_NAME} PUBLIC ${cJSON_LIBRARIES})
+message(STATUS "Found cJSON includes: ${cJSON_INCLUDE_DIR}")
